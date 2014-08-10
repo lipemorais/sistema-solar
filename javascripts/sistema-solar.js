@@ -13,11 +13,6 @@ var camera = new THREE.PerspectiveCamera(fovy, aspectRatio, near, far);
 camera.position.set(75, 75, 75);
 camera.lookAt(ORIGEM);
 
-// Criando a luz ambiente e adicionando a cena
-// var light = new THREE.AmbientLight(0x404040);
-// light.name = 'Luz Ambiente';
-// cena.add(light);
-
 // create a point light
 var pointLight =
   new THREE.PointLight(0xFFFFFF);
