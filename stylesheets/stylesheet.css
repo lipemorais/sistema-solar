@@ -3,7 +3,7 @@ body {
   padding: 0;
   background: #151515 url("../images/bkg.png") 0 0;
   color: #eaeaea;
-  font: 16px;
+  font-size: 16px;
   line-height: 1.5;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
 }
@@ -35,11 +35,23 @@ li {
    h2       - project description
 */
 
+
+@media screen and (max-width: 380px) {
+  footer a {
+    display: block;
+  }
+  footer span {
+    position: relative;
+    bottom: 28px;
+  }
+}
+
 header {
   background: rgba(0, 0, 0, 0.1);
   width: 100%;
   border-bottom: 1px dashed #b5e853;
   padding: 20px 0;
+  text-align: center;
 }
 
 header h1, footer {
@@ -86,7 +98,7 @@ header h1:before {
 header h2 {
   font-size: 18px;
   font-weight: 300;
-  color: #666;
+  color: #E4E9DB;
 }
 
 #downloads .btn {
