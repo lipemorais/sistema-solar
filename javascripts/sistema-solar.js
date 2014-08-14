@@ -83,6 +83,7 @@ var sol = criarSol(terra);
 
 function render(){
     sol.rotation.y += 0.01;
+    terra.rotation.y += 0.01;
 
     requestAnimationFrame(render);
     renderer.render(cena, camera);
