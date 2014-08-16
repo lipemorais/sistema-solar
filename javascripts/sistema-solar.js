@@ -43,6 +43,12 @@ function criarSol(objeto) {
     return sol;
 }
 
+function rotacionarSol () {
+    var matrizRotacao = new THREE.Matrix4();
+
+    matrizRotacao.makeRotationY(grauToRadiano(1));
+    sol.applyMatrix(matrizRotacao);
+}
 
 function criarTerra(objeto) {
     var geometriaTerra = new THREE.SphereGeometry(5, 20, 20),
@@ -50,7 +56,7 @@ function criarTerra(objeto) {
         terra = new THREE.Mesh(geometriaTerra, materialTerra);
 
     terra.add(objeto);
-    terra.translateZ(50);
+    terra.translateX(50);
     terra.name = 'Terra';
 
     cena.add(terra);
@@ -58,16 +64,59 @@ function criarTerra(objeto) {
     return terra;
 }
 
+function rotacionarTerra () {
+    // Rotation
+    var matrizRotacaoY = new THREE.Matrix4();
+        matrizRotacaoY.makeRotationY(grauToRadiano  (0.3));
+        terra.applyMatrix(matrizRotacaoY);
+
+    // Translation
+    var matrizRotacaoEixo =  new THREE.Matrix4(),
+        matrizTranslacaoPosicao = new THREE.Matrix4(),
+        matrizTranslacaoOrigem = new THREE.Matrix4(),
+        posicao = terra.position;
+
+    matrizRotacaoEixo.makeRotationY(grauToRadiano(0.000000000005));
+    matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+    matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+
+    terra.applyMatrix(matrizRotacaoEixo);
+    terra.applyMatrix(matrizTranslacaoPosicao);
+    terra.applyMatrix(matrizTranslacaoOrigem);
+}
+
 function criarLua() {
     var geometriaLua = new THREE.SphereGeometry(1, 20, 20),
         materialLua = new THREE.MeshLambertMaterial({color: 0x909090}),
         lua = new THREE.Mesh(geometriaLua, materialLua);
     lua.name = 'Lua';
-    lua.translateZ(10);
+    lua.translateX(10);
 
     cena.add(lua);
 
     return lua;
+}
+
+function rotacionarLua() {
+
+    // Rotation
+    var matrizRotacaoY = new THREE.Matrix4();
+    matrizRotacaoY.makeRotationY(grauToRadiano(1));
+    lua.applyMatrix(matrizRotacaoY);
+
+    // Translation
+    var matrizRotacaoEixo = new THREE.Matrix4(),
+        matrizTranslacaoPosicao = new THREE.Matrix4(),
+        matrizTranslacaoOrigem = new THREE.Matrix4(),
+        posicao = lua.position;
+
+    matrizRotacaoEixo.makeRotationY(grauToRadiano(0.0));
+    matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+    matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+
+    lua.applyMatrix(matrizTranslacaoOrigem);
+    lua.applyMatrix(matrizRotacaoEixo);
+    lua.applyMatrix(matrizTranslacaoPosicao);
 }
 
 function onWindowResize() {
@@ -77,6 +126,10 @@ function onWindowResize() {
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
+function grauToRadiano(grau) {
+    return grau * Math.PI / 180;
+}
+
 var lua = criarLua();
 var terra = criarTerra(lua);
 var sol = criarSol(terra);
@@ -84,9 +137,16 @@ var sol = criarSol(terra);
 function render(){
     sol.rotation.y += 0.01;
     terra.rotation.y += 0.01;
+    lua.rotation.y += 0.01;
+
+    renderer.render(cena, camera);
+
+    // rotacionarSol();
+    // rotacionarTerra();
+    // rotacionarLua();
 
     requestAnimationFrame(render);
-    renderer.render(cena, camera);
+
 
     window.addEventListener( 'resize', onWindowResize, false );
 }
